@@ -75,7 +75,7 @@ class moneroValidationModuleFrontController extends ModuleFrontController
        * Check if a payment has been made with this payment id then notify the merchant
        */
       
-      $amount_atomic_units = $amount * 1000000000000;
+      $amount_atomic_units = $amount * 100;
       $get_payments_method = $this->monero_daemon->get_payments($payment_id);
       if(isset($get_payments_method["payments"][0]["amount"]))
       { 
