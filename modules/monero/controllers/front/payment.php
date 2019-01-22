@@ -29,8 +29,8 @@ class moneropaymentModuleFrontController extends ModuleFrontController
 
 		$this->monero_daemon = new Monero_Library($daemon_address .'/json_rpc',"",""); // example $daemon address 127.0.0.1:18081
 
-		$integrated_address_method = $this->monero_daemon->make_integrated_address($payment_id);
-		$integrated_address = $integrated_address_method["integrated_address"];
+		$integrated_address_method = $this->monero_daemon->createIntegratedAddress($payment_id);
+		$integrated_address = $integrated_address_method["integratedAddress"];
 
 		if($this->verify_payment($payment_id, $amount))
 		{
@@ -58,7 +58,7 @@ class moneropaymentModuleFrontController extends ModuleFrontController
 				{
 					if(!isset($_COOKIE['payment_id']))
 					{
-						$payment_id  = bin2hex(openssl_random_pseudo_bytes(8));
+						$payment_id  = bin2hex(openssl_random_pseudo_bytes(64));
 						setcookie('payment_id', $payment_id, time()+2700);
 					}
 					else
@@ -106,11 +106,11 @@ class moneropaymentModuleFrontController extends ModuleFrontController
        * Check if a payment has been made with this payment id then notify the merchant
        */
 
-      $amount_atomic_units = $amount * 1000000000000;
-      $get_payments_method = $this->monero_daemon->get_payments($payment_id);
+      $amount_atomic_units = $amount * 100;
+      $get_payments_method = $this->monero_daemon->getTransaction($payment_id);
       if(isset($get_payments_method["payments"][0]["amount"]))
       {
-		if($get_payments_method["payments"][0]["amount"] >= $amount_atomic_units)
+		if($get_payments_method["transaction"][0]["amount"] >= $amount_atomic_units)
 		{
 			$confirmed = true;
 		}
