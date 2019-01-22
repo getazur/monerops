@@ -232,40 +232,40 @@ class Monero_Library
 
     public function address()
     {
-        $address = $this->_run('getaddress');
+        $address = $this->_run('getAddresses');
         return $address;
     }
 
-    public function getbalance()
+    public function getBalance()
     {
-         $balance = $this->_run('getbalance');
+         $balance = $this->_run('getBalance');
          return $balance;
     }
 
     public function getheight()
     {
-         $height = $this->_run('getheight');
+         $height = $this->_run('getStatus');
          return $height;
     }
 
     public function incoming_transfer($type)
     {
         $incoming_parameters = array('transfer_type' => $type);
-        $incoming_transfers = $this->_run('incoming_transfers', $incoming_parameters);
+        $incoming_transfers = $this->_run('getTransactions', $incoming_parameters);
         return $incoming_transfers;
     }
 
 	public function get_transfers($input_type, $input_value)
 	{
         $get_parameters = array($input_type => $input_value);
-        $get_transfers = $this->_run('get_transfers', $get_parameters);
+        $get_transfers = $this->_run('getTransaction', $get_parameters);
         return $get_transfers;
     }
 
     public function view_key()
     {
-        $query_key = array('key_type' => 'view_key');
-        $query_key_method = $this->_run('query_key', $query_key);
+        $query_key = array('' => '');
+        $query_key_method = $this->_run('getViewKey');
         return $query_key_method;
      }
 
@@ -273,8 +273,8 @@ class Monero_Library
         A random payment id will be generated if one is not given */
     public function make_integrated_address($payment_id)
     {
-        $integrate_address_parameters = array('payment_id' => $payment_id);
-        $integrate_address_method = $this->_run('make_integrated_address', $integrate_address_parameters);
+        $integrate_address_parameters = array('paymentId' => $address);
+        $integrate_address_method = $this->_run('createIntegratedAddress', $integrate_address_parameters);
         return $integrate_address_method;
     }
 
